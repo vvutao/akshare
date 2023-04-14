@@ -107,6 +107,7 @@ def bond_cb_jsl(cookie: str = None) -> pd.DataFrame:
             "volume": "成交额",
             "turnover_rt": "换手率",
             "ytm_rt": "到期税前收益",
+            "bond_nm_tip": "强赎",
         },
         inplace=True,
     )
@@ -136,6 +137,7 @@ def bond_cb_jsl(cookie: str = None) -> pd.DataFrame:
             "换手率",
             "到期税前收益",
             "双低",
+            "强赎",
         ]
     ]
     temp_df['到期时间'] = pd.to_datetime(temp_df['到期时间']).dt.date
