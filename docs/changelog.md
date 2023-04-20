@@ -56,6 +56,27 @@
 
 ## 更新说明
 
+1.9.58 add: add option_gfex_daily interface
+
+    1. 新增 option_gfex_daily 接口
+    2. 新增 option_gfex_vol_daily 接口
+
+1.9.57 fix: fix stock_lhb_detail_em interface
+
+    1. 修复 stock_lhb_detail_em 接口
+
+1.9.56 fix: fix get_receipt interface
+
+    1. 修复 get_receipt 接口
+
+1.9.55 fix: fix stock_zh_valuation_baidu interface
+
+    1. 修复 stock_zh_valuation_baidu 接口
+
+1.9.54 fix: fix stock_board_concept_cons_ths interface
+
+    1. 修复 stock_board_concept_cons_ths 接口
+
 1.9.53 fix: fix get_ine_daily interface
 
     1. 修复 get_ine_daily 接口
@@ -2189,6 +2210,16 @@
     3. 修改 air_quality_hist 接口的请求日期格式，从 '2022-01-01' 为 '20220101'
 
 ## 版本更新说明
+
+1.9.58 add: add option_gfex_daily interface
+
+1.9.57 fix: fix stock_lhb_detail_em interface
+
+1.9.56 fix: fix get_receipt interface
+
+1.9.55 fix: fix stock_zh_valuation_baidu interface
+
+1.9.54 fix: fix stock_board_concept_cons_ths interface
 
 1.9.53 fix: fix get_ine_daily interface
 
