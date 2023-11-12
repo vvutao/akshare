@@ -23,7 +23,7 @@ def bond_new_composite_index_cbond(
     """
     indicator_map = {
         "全价": "QJZS",
-        "净价": "JQZS",
+        "净价": "JJZS",
         "财富": "CFZS",
         "平均市值法久期": "PJSZFJQ",
         "平均现金流法久期": "PJXJLFJQ",
@@ -61,6 +61,10 @@ def bond_new_composite_index_cbond(
         "": "",
         "qxlxt": period_map[period],
         "": "",
+        "ltcslx": "",
+        "": "",
+        "zslxt": indicator_map[indicator],
+        "": "",
         "zslxt": indicator_map[indicator],
         "": "",
         "lx": "1",
@@ -75,8 +79,9 @@ def bond_new_composite_index_cbond(
     )
     temp_df.reset_index(inplace=True)
     temp_df.columns = ["date", "value"]
-    temp_df["date"] = pd.to_datetime(temp_df["date"], unit="ms").dt.date
-    temp_df["value"] = pd.to_numeric(temp_df["value"])
+    temp_df['date'] = temp_df['date'].astype(float)
+    temp_df["date"] = pd.to_datetime(temp_df["date"], unit="ms", errors="coerce", utc=True).dt.tz_convert("Asia/Shanghai").dt.date
+    temp_df["value"] = pd.to_numeric(temp_df["value"], errors="coerce")
     return temp_df
 
 
@@ -95,7 +100,7 @@ def bond_composite_index_cbond(
     """
     indicator_map = {
         "全价": "QJZS",
-        "净价": "JQZS",
+        "净价": "JJZS",
         "财富": "CFZS",
         "平均市值法久期": "PJSZFJQ",
         "平均现金流法久期": "PJXJLFJQ",

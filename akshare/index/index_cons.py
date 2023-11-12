@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
 """
-Date: 2023/4/10 16:19
+Date: 2023/7/11 13:19
 Desc: 股票指数成份股数据, 新浪有两个接口, 这里使用老接口:
-新接口：http://vip.stock.finance.sina.com.cn/mkt/#zhishu_000001
-老接口：http://vip.stock.finance.sina.com.cn/corp/view/vII_NewestComponent.php?page=1&indexid=399639
+新接口：https://vip.stock.finance.sina.com.cn/mkt/#zhishu_000001
+老接口：https://vip.stock.finance.sina.com.cn/corp/view/vII_NewestComponent.php?page=1&indexid=399639
 """
 import math
 from io import BytesIO
@@ -12,7 +12,6 @@ from io import BytesIO
 import pandas as pd
 import requests
 from bs4 import BeautifulSoup
-from tqdm import tqdm
 
 from akshare.utils import demjson
 
@@ -20,7 +19,7 @@ from akshare.utils import demjson
 def index_stock_cons_sina(symbol: str = "000300") -> pd.DataFrame:
     """
     新浪新版股票指数成份页面, 目前该接口可获取指数数量较少
-    http://vip.stock.finance.sina.com.cn/mkt/#zhishu_000040
+    https://vip.stock.finance.sina.com.cn/mkt/#zhishu_000040
     :param symbol: 指数代码
     :type symbol: str
     :return: 指数的成份股
@@ -28,13 +27,13 @@ def index_stock_cons_sina(symbol: str = "000300") -> pd.DataFrame:
     """
     if symbol == "000300":
         symbol = "hs300"
-        url = "http://vip.stock.finance.sina.com.cn/quotes_service/api/json_v2.php/Market_Center.getHQNodeStockCountSimple"
+        url = "https://vip.stock.finance.sina.com.cn/quotes_service/api/json_v2.php/Market_Center.getHQNodeStockCountSimple"
         params = {"node": f"{symbol}"}
         r = requests.get(url, params=params)
         page_num = math.ceil(int(r.json()) / 80) + 1
         temp_df = pd.DataFrame()
         for page in range(1, page_num):
-            url = "http://vip.stock.finance.sina.com.cn/quotes_service/api/json_v2.php/Market_Center.getHQNodeData"
+            url = "https://vip.stock.finance.sina.com.cn/quotes_service/api/json_v2.php/Market_Center.getHQNodeData"
             params = {
                 "page": str(page),
                 "num": "80",
@@ -50,7 +49,7 @@ def index_stock_cons_sina(symbol: str = "000300") -> pd.DataFrame:
             )
         return temp_df
 
-    url = "http://vip.stock.finance.sina.com.cn/quotes_service/api/json_v2.php/Market_Center.getHQNodeDataSimple"
+    url = "https://vip.stock.finance.sina.com.cn/quotes_service/api/json_v2.php/Market_Center.getHQNodeDataSimple"
     params = {
         "page": 1,
         "num": "3000",
@@ -79,13 +78,13 @@ def index_stock_info() -> pd.DataFrame:
 def index_stock_cons(symbol: str = "399639") -> pd.DataFrame:
     """
     最新股票指数的成份股目录
-    http://vip.stock.finance.sina.com.cn/corp/view/vII_NewestComponent.php?page=1&indexid=399639
+    https://vip.stock.finance.sina.com.cn/corp/view/vII_NewestComponent.php?page=1&indexid=399639
     :param symbol: 指数代码, 可以通过 ak.index_stock_info() 函数获取
     :type symbol: str
     :return: 最新股票指数的成份股目录
     :rtype: pandas.DataFrame
     """
-    url = f"http://vip.stock.finance.sina.com.cn/corp/go.php/vII_NewestComponent/indexid/{symbol}.phtml"
+    url = f"https://vip.stock.finance.sina.com.cn/corp/go.php/vII_NewestComponent/indexid/{symbol}.phtml"
     r = requests.get(url)
     r.encoding = "gb2312"
     soup = BeautifulSoup(r.text, "lxml")
@@ -103,7 +102,7 @@ def index_stock_cons(symbol: str = "399639") -> pd.DataFrame:
 
     temp_df = pd.DataFrame()
     for page in range(1, int(page_num) + 1):
-        url = f"http://vip.stock.finance.sina.com.cn/corp/view/vII_NewestComponent.php?page={page}&indexid={symbol}"
+        url = f"https://vip.stock.finance.sina.com.cn/corp/view/vII_NewestComponent.php?page={page}&indexid={symbol}"
         r = requests.get(url)
         r.encoding = "gb2312"
         temp_df = pd.concat(
@@ -117,7 +116,7 @@ def index_stock_cons(symbol: str = "399639") -> pd.DataFrame:
 def index_stock_cons_csindex(symbol: str = "000300") -> pd.DataFrame:
     """
     中证指数网站-成份股目录
-    http://www.csindex.com.cn/zh-CN/indices/index-detail/000300
+    https://www.csindex.com.cn/zh-CN/indices/index-detail/000300
     :param symbol: 指数代码, 可以通过 ak.index_stock_info() 函数获取
     :type symbol: str
     :return: 最新指数的成份股
@@ -146,7 +145,7 @@ def index_stock_cons_csindex(symbol: str = "000300") -> pd.DataFrame:
 def index_stock_cons_weight_csindex(symbol: str = "000300") -> pd.DataFrame:
     """
     中证指数网站-样本权重
-    http://www.csindex.com.cn/zh-CN/indices/index-detail/000300
+    https://www.csindex.com.cn/zh-CN/indices/index-detail/000300
     :param symbol: 指数代码, 可以通过 ak.index_stock_info() 接口获取
     :type symbol: str
     :return: 最新指数的成份股权重
@@ -171,38 +170,6 @@ def index_stock_cons_weight_csindex(symbol: str = "000300") -> pd.DataFrame:
     temp_df["指数代码"] = temp_df["指数代码"].astype(str).str.zfill(6)
     temp_df["成分券代码"] = temp_df["成分券代码"].astype(str).str.zfill(6)
     temp_df["权重"] = pd.to_numeric(temp_df["权重"])
-    return temp_df
-
-
-def index_stock_hist(symbol: str = "sh000300") -> pd.DataFrame:
-    """
-    指数历史成份, 从 2005 年开始
-    http://stock.jrj.com.cn/share,sh000300,2015nlscf_2.shtml
-    :param symbol: 指数代码, 需要带市场前缀
-    :type symbol: str
-    :return: 历史成份的进入和退出数据
-    :rtype: pandas.DataFrame
-    """
-    url = f"http://stock.jrj.com.cn/share,{symbol},2015nlscf.shtml"
-    r = requests.get(url)
-    r.encoding = "gb2312"
-    soup = BeautifulSoup(r.text, "lxml")
-    last_page_num = soup.find_all("a", attrs={"target": "_self"})[-2].text
-    temp_df = pd.read_html(r.text)[-1]
-    if last_page_num == "历史成份":
-        temp_df["股票代码"] = temp_df["股票代码"].astype(str).str.zfill(6)
-        del temp_df["股票名称"]
-        temp_df.columns = ["stock_code", "in_date", "out_date"]
-        return temp_df
-    for page in tqdm(range(2, int(last_page_num) + 1), leave=False):
-        url = f"http://stock.jrj.com.cn/share,{symbol},2015nlscf_{page}.shtml"
-        r = requests.get(url)
-        r.encoding = "gb2312"
-        inner_temp_df = pd.read_html(r.text)[-1]
-        temp_df = pd.concat([temp_df, inner_temp_df], ignore_index=True)
-    temp_df["股票代码"] = temp_df["股票代码"].astype(str).str.zfill(6)
-    del temp_df["股票名称"]
-    temp_df.columns = ["stock_code", "in_date", "out_date"]
     return temp_df
 
 
@@ -234,6 +201,3 @@ if __name__ == "__main__":
 
     index_stock_cons_df = index_stock_cons(symbol="000688")
     print(index_stock_cons_df)
-
-    stock_index_hist_df = index_stock_hist(symbol="sh000300")
-    print(stock_index_hist_df)

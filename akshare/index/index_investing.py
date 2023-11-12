@@ -7,13 +7,11 @@ https://cn.investing.com/indices/volatility-s-p-500-historical-data
 """
 import json
 
-import cfscrape
 import pandas as pd
 import requests
 from bs4 import BeautifulSoup
 
 from akshare.index.cons import short_headers
-from akshare.utils.ak_session import session
 
 
 def _get_global_index_area_name_code() -> dict:
@@ -31,7 +29,7 @@ def _get_global_index_area_name_code() -> dict:
         "additionalIndices": "on",
         "otherIndices": "on",
     }
-    r = session.get(url, params=params, headers=short_headers)
+    r = requests.get(url, params=params, headers=short_headers)
     data_text = r.text
     soup = BeautifulSoup(data_text, "lxml")
     name_url_option_list = soup.find_all("option")[1:]
@@ -61,7 +59,7 @@ def _get_global_country_name_url() -> dict:
     :rtype: dict
     """
     url = "https://cn.investing.com/indices/"
-    res = session.post(url, headers=short_headers)
+    res = requests.post(url, headers=short_headers)
     soup = BeautifulSoup(res.text, "lxml")
     name_url_option_list = soup.find(
         "select", attrs={"name": "country"}
@@ -84,11 +82,10 @@ def index_investing_global_area_index_name_code(area: str = "中国") -> dict:
     :return: 指定 area 的所有指数和代码
     :rtype: dict
     """
-    scraper = cfscrape.create_scraper(delay=10)
     pd.set_option("mode.chained_assignment", None)
     name_url_dict = _get_global_country_name_url()
     url = f"https://cn.investing.com{name_url_dict[area]}?&majorIndices=on&primarySectors=on&additionalIndices=on&otherIndices=on"
-    r = scraper.get(url)
+    r = requests.get(url)
     soup = BeautifulSoup(r.text, "lxml")
     code_list = [
         item["data-id"]
@@ -114,11 +111,10 @@ def index_investing_global_area_index_name_url(area: str = "中国") -> dict:
     :return: 指定 area 的所有指数和 URL 地址
     :rtype: dict
     """
-    scraper = cfscrape.create_scraper(delay=10)
     pd.set_option("mode.chained_assignment", None)
     name_url_dict = _get_global_country_name_url()
     url = f"https://cn.investing.com{name_url_dict[area]}?&majorIndices=on&primarySectors=on&additionalIndices=on&otherIndices=on"
-    r = scraper.get(url)
+    r = requests.get(url)
     soup = BeautifulSoup(r.text, "lxml")
     code_list = [
         item.find("a")["href"]
@@ -185,8 +181,7 @@ def index_investing_global(
         "authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NjM2NjQ1NzUsImp0aSI6IjIyODA4MDM5MSIsImlhdCI6MTY2MzY2MDk3NSwiaXNzIjoiaW52ZXN0aW5nLmNvbSIsInVzZXJfaWQiOjIyODA4MDM5MSwicHJpbWFyeV9kb21haW5faWQiOiIxIiwiQXV0aG5TeXN0ZW1Ub2tlbiI6IiIsIkF1dGhuU2Vzc2lvblRva2VuIjoiIiwiRGV2aWNlVG9rZW4iOiIiLCJVYXBpVG9rZW4iOiJObmclMkJmMlJyUHpjeWRtdHRaell5TW1JN1pUNWliV1prTURJMVB6czlNeVUySWpVN1lEYzNjV1ZxYWlSZ1kyVjVNamRsWWpRMFptWTFQMkk4TnpCdlBEWXlQbVJrWXo4M01tQnJaMmN3TW1aaU1HVm9ZbWRtWmpBNU5UWTdhRE0lMkJOalUxTW1Cdk56VmxPbW93WUR4bGJUSWdaWGswY0daM05XZGlNamQyYnlnMk9UNSUyRlpEUSUyRllESm1hMjluTURJeFlqRmxQV0l3Wmpjd1pUVXhPenN6S3paOSIsIkF1dGhuSWQiOiIiLCJJc0RvdWJsZUVuY3J5cHRlZCI6ZmFsc2UsIkRldmljZUlkIjoiIiwiUmVmcmVzaEV4cGlyZWRBdCI6MTY2NjE4MDk3NX0.uRLTP1IG3696uxHm3Qq0D8z4o3nfsD3CaIS9cZGjsV0",
         "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36",
     }
-    scraper = cfscrape.create_scraper(delay=10)
-    r = scraper.get(url, params=params, headers=headers)
+    r = requests.get(url, params=params, headers=headers)
     r.encoding = "utf-8"
     r = requests.get(url, params=params, headers=headers)
     data_json = r.json()
@@ -243,8 +238,7 @@ def index_investing_global_from_url(
     :rtype: pandas.DataFrame
     """
     url = url.replace("www", "cn")
-    scraper = cfscrape.create_scraper(delay=10)
-    r = scraper.get(url)
+    r = requests.get(url)
     soup = BeautifulSoup(r.text, "lxml")
     data_text = soup.find("script", attrs={"id": "__NEXT_DATA__"}).text
     data_json = json.loads(data_text)

@@ -1,47 +1,31 @@
 # -*- coding:utf-8 -*-
 # !/usr/bin/env python
 """
-Date: 2022/7/13 15:34
+Date: 2023/5/29 23:34
 Desc: 巨潮资讯-行业分类数据
 http://webapi.cninfo.com.cn/#/apiDoc
 http://webapi.cninfo.com.cn/api/stock/p_stock2110
 """
-import time
-
 import numpy as np
 import pandas as pd
 import requests
 from py_mini_racer import py_mini_racer
 
-js_str = """
-    function mcode(input) {
-                var keyStr = "ABCDEFGHIJKLMNOP" + "QRSTUVWXYZabcdef" + "ghijklmnopqrstuv"   + "wxyz0123456789+/" + "=";
-                var output = "";
-                var chr1, chr2, chr3 = "";
-                var enc1, enc2, enc3, enc4 = "";
-                var i = 0;
-                do {
-                    chr1 = input.charCodeAt(i++);
-                    chr2 = input.charCodeAt(i++);
-                    chr3 = input.charCodeAt(i++);
-                    enc1 = chr1 >> 2;
-                    enc2 = ((chr1 & 3) << 4) | (chr2 >> 4);
-                    enc3 = ((chr2 & 15) << 2) | (chr3 >> 6);
-                    enc4 = chr3 & 63;
-                    if (isNaN(chr2)) {
-                        enc3 = enc4 = 64;
-                    } else if (isNaN(chr3)) {
-                        enc4 = 64;
-                    }
-                    output = output + keyStr.charAt(enc1) + keyStr.charAt(enc2)
-                            + keyStr.charAt(enc3) + keyStr.charAt(enc4);
-                    chr1 = chr2 = chr3 = "";
-                    enc1 = enc2 = enc3 = enc4 = "";
-                } while (i < input.length);
+from akshare.datasets import get_ths_js
 
-                return output;
-            }
-"""
+
+def _get_file_content_ths(file: str = "cninfo.js") -> str:
+    """
+    获取 JS 文件的内容
+    :param file:  JS 文件名
+    :type file: str
+    :return: 文件内容
+    :rtype: str
+    """
+    setting_file_path = get_ths_js(file)
+    with open(setting_file_path) as f:
+        file_data = f.read()
+    return file_data
 
 
 def stock_industry_category_cninfo(symbol: str = "巨潮行业分类标准") -> pd.DataFrame:
@@ -65,11 +49,11 @@ def stock_industry_category_cninfo(symbol: str = "巨潮行业分类标准") -> 
         "全球行业分类标准": "008008",
     }
     url = "http://webapi.cninfo.com.cn/api/stock/p_public0002"
-    params = {"indcode": "", "indtype": symbol_map[symbol]}
-    random_time_str = str(int(time.time()))
+    params = {"indcode": "", "indtype": symbol_map[symbol], "format": "json"}
     js_code = py_mini_racer.MiniRacer()
-    js_code.eval(js_str)
-    mcode = js_code.call("mcode", random_time_str)
+    js_content = _get_file_content_ths("cninfo.js")
+    js_code.eval(js_content)
+    mcode = js_code.call("getResCode1")
     headers = {
         "Accept": "*/*",
         "Accept-Encoding": "gzip, deflate",
@@ -77,7 +61,7 @@ def stock_industry_category_cninfo(symbol: str = "巨潮行业分类标准") -> 
         "Cache-Control": "no-cache",
         "Content-Length": "0",
         "Host": "webapi.cninfo.com.cn",
-        "mcode": mcode,
+        "Accept-Enckey": mcode,
         "Origin": "http://webapi.cninfo.com.cn",
         "Pragma": "no-cache",
         "Proxy-Connection": "keep-alive",
@@ -85,7 +69,7 @@ def stock_industry_category_cninfo(symbol: str = "巨潮行业分类标准") -> 
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.63 Safari/537.36",
         "X-Requested-With": "XMLHttpRequest",
     }
-    r = requests.post(url, params=params, headers=headers)
+    r = requests.get(url, params=params, headers=headers)
     data_json = r.json()
     temp_df = pd.DataFrame(data_json["records"])
     cols_map = {
@@ -105,9 +89,7 @@ def stock_industry_category_cninfo(symbol: str = "巨潮行业分类标准") -> 
     g = tmp.groupby("len")
     level = 0
     for k in g.groups.keys():
-        temp_df.loc[
-            temp_df["类目编码"].isin(g.get_group(k)["类目编码"]), "Level"
-        ] = level
+        temp_df.loc[temp_df["类目编码"].isin(g.get_group(k)["类目编码"]), "Level"] = level
         level += 1
     temp_df["Level"] = temp_df["Level"].astype(int)
     temp_df.rename(columns={"Level": "分级"}, inplace=True)
@@ -139,10 +121,11 @@ def stock_industry_change_cninfo(
         "sdate": "-".join([start_date[:4], start_date[4:6], start_date[6:]]),
         "edate": "-".join([end_date[:4], end_date[4:6], end_date[6:]]),
     }
-    random_time_str = str(int(time.time()))
+
     js_code = py_mini_racer.MiniRacer()
-    js_code.eval(js_str)
-    mcode = js_code.call("mcode", random_time_str)
+    js_content = _get_file_content_ths("cninfo.js")
+    js_code.eval(js_content)
+    mcode = js_code.call("getResCode1")
     headers = {
         "Accept": "*/*",
         "Accept-Encoding": "gzip, deflate",
@@ -150,7 +133,7 @@ def stock_industry_change_cninfo(
         "Cache-Control": "no-cache",
         "Content-Length": "0",
         "Host": "webapi.cninfo.com.cn",
-        "mcode": mcode,
+        "Accept-Enckey": mcode,
         "Origin": "http://webapi.cninfo.com.cn",
         "Pragma": "no-cache",
         "Proxy-Connection": "keep-alive",

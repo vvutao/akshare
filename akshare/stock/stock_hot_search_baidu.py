@@ -1,15 +1,16 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
 """
-Date: 2022/10/14 18:19
+Date: 2023/4/21 14:19
 Desc: 百度股市通-热搜股票
 https://gushitong.baidu.com/expressnews
 """
 import pandas as pd
 import requests
+from datetime import datetime
 
 
-def stock_hot_search_baidu(symbol: str = "A股", date: str = "20221014", time: str = "0"):
+def stock_hot_search_baidu(symbol: str = "A股", date: str = "20230428", time: str = "今日"):
     """
     百度股市通-热搜股票
     https://gushitong.baidu.com/expressnews
@@ -17,11 +18,12 @@ def stock_hot_search_baidu(symbol: str = "A股", date: str = "20221014", time: s
     :type symbol: str
     :param date: 日期
     :type date: str
-    :param time: 默认 time=0，则为当天的排行；如 time="16"，则为 date 的 16 点的热门股票排行
+    :param time: time="今日"；choice of {"今日", "1小时"}
     :type time: str
     :return: 股东人数及持股集中度
     :rtype: pandas.DataFrame
     """
+    hour_str = datetime.now().hour
     symbol_map = {
         "全部": "all",
         "A股": "ab",
@@ -34,11 +36,11 @@ def stock_hot_search_baidu(symbol: str = "A股", date: str = "20221014", time: s
         "dsp": "iphone",
         "product": "stock",
         "day": date,
-        "hour": time,
+        "hour": hour_str,
         "pn": "0",
         "rn": "1000",
         "market": symbol_map[symbol],
-        "type": "day" if time == 0 else "hour",
+        "type": "day" if time == "今日" else "hour",
         "finClientType": "pc",
     }
     r = requests.get(url, params=params)
@@ -46,14 +48,13 @@ def stock_hot_search_baidu(symbol: str = "A股", date: str = "20221014", time: s
     temp_df = pd.DataFrame(
         data_json["Result"]["body"], columns=data_json["Result"]["header"]
     )
-    temp_df["综合热度"] = pd.to_numeric(temp_df["综合热度"])
-    temp_df["排名变化"] = pd.to_numeric(temp_df["排名变化"])
-    temp_df["是否连续上榜"] = pd.to_numeric(temp_df["是否连续上榜"])
+    temp_df["现价"] = pd.to_numeric(temp_df["现价"], errors="coerce")
+    temp_df["排名变化"] = pd.to_numeric(temp_df["排名变化"], errors="coerce")
     return temp_df
 
 
 if __name__ == "__main__":
     stock_hot_search_baidu_df = stock_hot_search_baidu(
-        symbol="A股", date="20221025", time="19"
+        symbol="A股", date="20230428", time="今日"
     )
     print(stock_hot_search_baidu_df)

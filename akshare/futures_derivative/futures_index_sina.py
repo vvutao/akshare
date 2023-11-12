@@ -1,10 +1,12 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
 """
-Date: 2021/12/22 15:41
+Date: 2023/11/5 20:00
 Desc: 新浪财经-期货的主力合约数据
 https://finance.sina.com.cn/futuremarket/index.shtml
 """
+from io import StringIO
+
 import pandas as pd
 import requests
 
@@ -20,16 +22,14 @@ def zh_subscribe_exchange_symbol(symbol: str = "dce") -> pd.DataFrame:
     """
     订阅指定交易所品种的代码
     https://finance.sina.com.cn/futuremarket/index.shtml
-    :param symbol: choice of {"dce", "czce", "shfe", "cffex"}
+    :param symbol: choice of {"dce", "czce", "shfe", "cffex", "gfex"}
     :type symbol: str
     :return: 订阅指定交易所品种的代码
     :rtype: pandas.DataFrame
     """
     r = requests.get(zh_subscribe_exchange_symbol_url)
     r.encoding = "gb2312"
-    data_json = demjson.decode(
-        r.text[r.text.find("{") : r.text.find("};") + 1]
-    )
+    data_json = demjson.decode(r.text[r.text.find("{"): r.text.find("};") + 1])
     if symbol == "czce":
         data_json["czce"].remove("郑州商品交易所")
         return pd.DataFrame(data_json["czce"])
@@ -42,21 +42,22 @@ def zh_subscribe_exchange_symbol(symbol: str = "dce") -> pd.DataFrame:
     if symbol == "cffex":
         data_json["cffex"].remove("中国金融期货交易所")
         return pd.DataFrame(data_json["cffex"])
+    if symbol == "gfex":
+        data_json["gfex"].remove("广州期货交易所")
+        return pd.DataFrame(data_json["gfex"])
 
 
 def match_main_contract(symbol: str = "shfe") -> pd.DataFrame:
     """
     指定交易所的所有可以提供数据的合约
     https://finance.sina.com.cn/futuremarket/index.shtml
-    :param symbol: choice of {"dce", "czce", "shfe", "cffex"}
+    :param symbol: choice of {"dce", "czce", "shfe", "cffex", "gfex"}
     :type symbol: str
     :return: 指定交易所的所有可以提供数据的合约
     :rtype: pandas.DataFrame
     """
     subscribe_list = []
-    exchange_symbol_list = (
-        zh_subscribe_exchange_symbol(symbol).iloc[:, 1].tolist()
-    )
+    exchange_symbol_list = zh_subscribe_exchange_symbol(symbol).iloc[:, 1].tolist()
     for item in exchange_symbol_list:
         zh_match_main_contract_payload.update({"node": item})
         res = requests.get(
@@ -66,12 +67,12 @@ def match_main_contract(symbol: str = "shfe") -> pd.DataFrame:
         data_df = pd.DataFrame(data_json)
         try:
             main_contract = data_df[
-                data_df["name"].str.contains("连续")
-                & data_df["symbol"]
-                .str.extract(r"([\w])(\d)")
-                .iloc[:, 1]
-                .str.contains("0")
-            ].iloc[0, :3]
+                                data_df["name"].str.contains("连续")
+                                & data_df["symbol"]
+                                  .str.extract(r"([\w])(\d)")
+                                  .iloc[:, 1]
+                                .str.contains("0")
+                                ].iloc[0, :3]
             subscribe_list.append(main_contract)
         except:
             # print(item, "无主力连续合约")
@@ -89,20 +90,20 @@ def futures_display_main_sina() -> pd.DataFrame:
     :rtype: pandas.DataFrame
     """
     temp_df = pd.DataFrame()
-    for item in ["dce", "czce", "shfe", "cffex"]:
+    for item in ["dce", "czce", "shfe", "cffex", "gfex"]:
         temp_df = pd.concat([temp_df, match_main_contract(symbol=item)])
     temp_df.reset_index(inplace=True, drop=True)
     return temp_df
 
 
 def futures_main_sina(
-    symbol: str = "V0",
-    start_date: str = "19900101",
-    end_date: str = "22220101",
+        symbol: str = "V0",
+        start_date: str = "19900101",
+        end_date: str = "22220101",
 ) -> pd.DataFrame:
     """
     新浪财经-期货-主力连续日数据
-    http://vip.stock.finance.sina.com.cn/quotes_service/view/qihuohangqing.html#titlePos_1
+    https://vip.stock.finance.sina.com.cn/quotes_service/view/qihuohangqing.html#titlePos_1
     :param symbol: 通过 ak.futures_display_main_sina() 函数获取 symbol
     :type symbol: str
     :param start_date: 开始时间
@@ -117,22 +118,22 @@ def futures_main_sina(
     url = f"https://stock2.finance.sina.com.cn/futures/api/jsonp.php/var%20_{symbol}{trade_date}=/InnerFuturesNewService.getDailyKLine?symbol={symbol}&_={trade_date}"
     r = requests.get(url)
     data_text = r.text
-    data_json = data_text[data_text.find("([") + 1 : data_text.rfind("])") + 1]
-    temp_df = pd.read_json(data_json)
+    data_json = data_text[data_text.find("([") + 1: data_text.rfind("])") + 1]
+    temp_df = pd.read_json(StringIO(data_json))
     temp_df.columns = ["日期", "开盘价", "最高价", "最低价", "收盘价", "成交量", "持仓量", "动态结算价"]
     temp_df["日期"] = pd.to_datetime(temp_df["日期"]).dt.date
-    temp_df.set_index(["日期"], inplace=True)
+    temp_df.set_index(keys=["日期"], inplace=True)
     temp_df.index = pd.to_datetime(temp_df.index)
     temp_df = temp_df[start_date:end_date]
     temp_df.reset_index(inplace=True)
-    temp_df["日期"] = pd.to_datetime(temp_df["日期"]).dt.date
-    temp_df["开盘价"] = pd.to_numeric(temp_df["开盘价"])
-    temp_df["最高价"] = pd.to_numeric(temp_df["最高价"])
-    temp_df["最低价"] = pd.to_numeric(temp_df["最低价"])
-    temp_df["收盘价"] = pd.to_numeric(temp_df["收盘价"])
-    temp_df["成交量"] = pd.to_numeric(temp_df["成交量"])
-    temp_df["持仓量"] = pd.to_numeric(temp_df["持仓量"])
-    temp_df["动态结算价"] = pd.to_numeric(temp_df["动态结算价"])
+    temp_df["日期"] = pd.to_datetime(temp_df["日期"], errors="coerce").dt.date
+    temp_df["开盘价"] = pd.to_numeric(temp_df["开盘价"], errors="coerce")
+    temp_df["最高价"] = pd.to_numeric(temp_df["最高价"], errors="coerce")
+    temp_df["最低价"] = pd.to_numeric(temp_df["最低价"], errors="coerce")
+    temp_df["收盘价"] = pd.to_numeric(temp_df["收盘价"], errors="coerce")
+    temp_df["成交量"] = pd.to_numeric(temp_df["成交量"], errors="coerce")
+    temp_df["持仓量"] = pd.to_numeric(temp_df["持仓量"], errors="coerce")
+    temp_df["动态结算价"] = pd.to_numeric(temp_df["动态结算价"], errors="coerce")
     return temp_df
 
 
@@ -141,6 +142,6 @@ if __name__ == "__main__":
     print(futures_display_main_sina_df)
 
     futures_main_sina_hist = futures_main_sina(
-        symbol="V0", start_date="20200101", end_date="20220101"
+        symbol="V0", start_date="20170916", end_date="20230915"
     )
     print(futures_main_sina_hist)
