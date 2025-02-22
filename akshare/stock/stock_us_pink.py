@@ -1,10 +1,11 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
 """
-Date: 2021/9/10 19:02
+Date: 2025/2/20 17:00
 Desc: 东方财富网-行情中心-美股市场-粉单市场
-http://quote.eastmoney.com/center/gridlist.html#us_pinksheet
+https://quote.eastmoney.com/center/gridlist.html#us_pinksheet
 """
+
 import pandas as pd
 import requests
 
@@ -12,27 +13,28 @@ import requests
 def stock_us_pink_spot_em() -> pd.DataFrame:
     """
     东方财富网-行情中心-美股市场-粉单市场
-    http://quote.eastmoney.com/center/gridlist.html#us_pinksheet
+    https://quote.eastmoney.com/center/gridlist.html#us_pinksheet
     :return: 粉单市场实时行情
     :rtype: pandas.DataFrame
     """
-    url = "http://23.push2.eastmoney.com/api/qt/clist/get"
+    url = "https://23.push2.eastmoney.com/api/qt/clist/get"
     params = {
         "pn": "1",
-        "pz": "2000",
+        "pz": "50000",
         "po": "1",
-        "np": "1",
+        "np": "2",
         "ut": "bd1d9ddb04089700cf9c27f6f7426281",
         "fltt": "2",
         "invt": "2",
         "fid": "f3",
         "fs": "m:153",
-        "fields": "f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f12,f13,f14,f15,f16,f17,f18,f20,f21,f23,f24,f25,f26,f22,f33,f11,f62,f128,f136,f115,f152",
+        "fields": "f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f12,f13,f14,f15,f16,f17,f18,f20,f21,f23,f24,f25,"
+        "f26,f22,f33,f11,f62,f128,f136,f115,f152",
         "_": "1631271634231",
     }
     r = requests.get(url, params=params)
     data_json = r.json()
-    temp_df = pd.DataFrame(data_json["data"]["diff"])
+    temp_df = pd.DataFrame(data_json["data"]["diff"]).T
     temp_df.columns = [
         "_",
         "最新价",
