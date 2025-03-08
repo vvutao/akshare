@@ -482,7 +482,7 @@ def stock_new_a_spot_em() -> pd.DataFrame:
         "pn": "1",
         "pz": "50000",
         "po": "1",
-        "np": "1",
+        "np": "2",
         "ut": "bd1d9ddb04089700cf9c27f6f7426281",
         "fltt": "2",
         "invt": "2",
@@ -497,7 +497,7 @@ def stock_new_a_spot_em() -> pd.DataFrame:
     data_json = r.json()
     if not data_json["data"]["diff"]:
         return pd.DataFrame()
-    temp_df = pd.DataFrame(data_json["data"]["diff"])
+    temp_df = pd.DataFrame(data_json["data"]["diff"]).T
     temp_df.columns = [
         "_",
         "最新价",
@@ -1938,10 +1938,10 @@ if __name__ == "__main__":
     print(stock_hk_main_board_spot_em_df)
 
     stock_zh_a_hist_df = stock_zh_a_hist(
-        symbol="000001",
+        symbol="600734",
         period="daily",
-        start_date="20170301",
-        end_date="20240528",
+        start_date="20050501",
+        end_date="20250304",
         adjust="hfq",
     )
     print(stock_zh_a_hist_df)

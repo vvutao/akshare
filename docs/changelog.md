@@ -4,6 +4,7 @@
 
 | AKShare 版本 | 旧接口名称                                       | 新接口名称                                       | 修改日期     |
 |------------|---------------------------------------------|---------------------------------------------|----------|
+| 1.16.29    | futures_global_em                           | futures_global_spot_em                      | 20250305 |
 | 1.13.88    | index_cflp_volume                           | index_volume_cflp                           | 20240527 |
 | 1.13.88    | index_cflp_price                            | index_price_cflp                            | 20240527 |
 | 1.13.19    | car_gasgoo_sale_rank                        | car_sale_rank_gasgoo                        | 20240403 |
@@ -79,6 +80,130 @@
 | 1.4.86     | fund_em_aum                                 | fund_aum_em                                 | 20220322 |
 
 ## 更新说明详情
+
+1.16.32 fix: fix news_economic_baidu interface
+
+	1. 修复 news_economic_baidu 接口
+	2. 修复 news_trade_notify_suspend_baidu 接口
+	3. 修复 news_trade_notify_dividend_baidu 接口
+	4. 修复 news_report_time_baidu 接口
+
+1.16.31 add: add index_global_hist_em interface
+
+	1. 新增 index_global_hist_em 接口
+	2. 新增 index_global_spot_em 接口
+	3. 新增 index_global_name_table 接口
+	4. 新增 index_global_hist_sina 接口
+
+1.16.30 add: add forex_hist_em interface
+
+	1. 新增 forex_hist_em 接口
+	2. 新增 forex_hist_em 接口
+
+1.16.29 fix: fix futures_global_hist_em interface
+
+	1. 修复 futures_global_hist_em 接口
+	2. 修改 futures_global_spot_em 接口
+
+1.16.28 fix: fix futures_global_hist_em interface
+
+	1. 修复 futures_global_hist_em 接口
+
+1.16.27 fix: fix futures_global_em interface
+
+	1. 修复 futures_global_em 接口
+	2. 修复 futures_foreign_commodity_realtime 接口
+	3. 修复 futures_foreign_hist 接口
+	4. 修复 futures_inventory_99 接口
+	5. 修复 futures_inventory_em 接口
+	6. 修复 futures_hold_pos_sina 接口
+
+1.16.26 add: add stock_hsgt_sh_hk_spot_em interface
+
+	1. 新增 stock_hsgt_sh_hk_spot_em 接口
+	2. 新增 stock_zh_ah_spot_em 接口
+
+1.16.25 fix: fix stock_financial_abstract_ths interface
+
+	1. 修复 stock_financial_abstract_ths 接口
+
+1.16.24 fix: fix stock_financial_hk_report_em interface
+
+	1. 修复 stock_financial_hk_report_em 接口
+	2. 新增 stock_financial_us_report_em 接口
+	3. 新增 stock_financial_us_analysis_indicator_em 接口
+
+1.16.23 fix: fix stock_board_industry_cons_em interface
+
+	1. 修复 stock_board_industry_cons_em 接口
+	2. 修复 stock_board_concept_cons_em 接口
+
+1.16.22 fix: fix fund_money_fund_info_em interface
+
+	1. 修复 fund_money_fund_info_em 接口
+	2. 修复 fund_graded_fund_info_em 接口
+
+1.16.21 fix: fix stock_hk_index_daily_em interface
+
+	1. 修复 stock_hk_index_daily_em 接口
+	2. 修复 stock_individual_spot_xq 接口
+
+1.16.20 fix: fix stock_lhb_detail_em interface
+
+	1. 修复 stock_lhb_detail_em 接口
+	2. 修复 stock_sse_deal_daily 接口
+
+1.16.19 fix: fix stock_profit_forecast_ths interface
+
+	1. 修复 stock_profit_forecast_ths 接口
+
+1.16.18 fix: fix stock_board_concept_spot_em interface
+
+	1. 修复 stock_board_concept_spot_em 接口
+	2. 修复 stock_board_industry_spot_em 接口
+
+1.16.17 fix: fix stock_research_report_em interface
+
+	1. 修复 stock_research_report_em 接口
+	2. 修复 stock_board_industry_name_em 接口
+	3. 新增 stock_board_concept_index_ths 接口
+
+1.16.16 fix: fix stock_board_concept_spot_em interface
+
+	1. 修复 stock_board_concept_spot_em 接口
+	2. 修复 futures_inventory_em 接口
+
+1.16.15 fix: fix stock_board_concept_name_em interface
+
+	1. 修复 stock_board_concept_name_em 接口
+
+1.16.14 fix: fix stock_info_global_cls interface
+
+	1. 修复 stock_info_global_cls 接口
+
+1.16.13 fix: fix futures_inventory_99 interface
+
+	1. 修复 futures_inventory_99 接口
+
+1.16.12 fix: fix bond_zh_hs_cov_daily interface
+
+	1. 修复 bond_zh_hs_cov_daily 接口
+	2. 修复 reits_realtime_em 接口
+	3. 修复 stock_staq_net_stop 接口
+
+1.16.11 fix: fix stock_intraday_em interface
+
+	1. 修复 stock_intraday_em 接口
+	2. 修复 stock_hk_famous_spot_em 接口
+	3. 修复 stock_new_a_spot_em 接口
+	4. 修复 stock_us_famous_spot_em 接口
+	5. 修复 index_zh_a_hist_min_em 接口
+
+1.16.10 fix: fix option_risk_analysis_em interface
+
+	1. 修复 option_risk_analysis_em 接口
+	2. 修复 option_value_analysis_em 接口
+	3. 修复 option_premium_analysis_em 接口
 
 1.16.9 fix: fix stock_sse_deal_daily interface
 
@@ -5145,6 +5270,52 @@
     3. 修改 air_quality_hist 接口的请求日期格式，从 '2022-01-01' 为 '20220101'
 
 ## 版本更新说明
+
+1.16.32 fix: fix news_economic_baidu interface
+
+1.16.31 add: add index_global_hist_em interface
+
+1.16.30 add: add forex_hist_em interface
+
+1.16.29 fix: fix futures_global_hist_em interface
+
+1.16.28 fix: fix futures_global_hist_em interface
+
+1.16.27 fix: fix futures_global_em interface
+
+1.16.26 add: add stock_hsgt_sh_hk_spot_em interface
+
+1.16.25 fix: fix stock_financial_abstract_ths interface
+
+1.16.24 fix: fix stock_financial_hk_report_em interface
+
+1.16.23 fix: fix stock_board_industry_cons_em interface
+
+1.16.22 fix: fix fund_money_fund_info_em interface
+
+1.16.21 fix: fix stock_hk_index_daily_em interface
+
+1.16.20 fix: fix stock_lhb_detail_em interface
+
+1.16.19 fix: fix stock_profit_forecast_ths interface
+
+1.16.18 fix: fix stock_board_concept_spot_em interface
+
+1.16.17 fix: fix stock_research_report_em interface
+
+1.16.16 fix: fix stock_board_concept_spot_em interface
+
+1.16.15 fix: fix stock_board_concept_name_em interface
+
+1.16.14 fix: fix stock_info_global_cls interface
+
+1.16.13 fix: fix futures_inventory_99 interface
+
+1.16.12 fix: fix bond_zh_hs_cov_daily interface
+
+1.16.11 fix: fix stock_intraday_em interface
+
+1.16.10 fix: fix option_risk_analysis_em interface
 
 1.16.9 fix: fix stock_sse_deal_daily interface
 
