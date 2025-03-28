@@ -1,14 +1,15 @@
 # -*- coding:utf-8 -*-
 # !/usr/bin/env python
 """
-Date: 2023/11/27 18:00
+Date: 2025/3/26 21:15
 Desc: 东方财富网-数据中心-股东分析
 https://data.eastmoney.com/gdfx/
 """
 
 import pandas as pd
 import requests
-from tqdm import tqdm
+
+from akshare.utils.tqdm import get_tqdm
 
 
 def stock_gdfx_free_holding_statistics_em(
@@ -38,12 +39,13 @@ def stock_gdfx_free_holding_statistics_em(
     data_json = r.json()
     total_page = data_json["result"]["pages"]
     big_df = pd.DataFrame()
+    tqdm = get_tqdm()
     for page in tqdm(range(1, total_page + 1), leave=False):
         params.update({"pageNumber": page})
         r = requests.get(url, params=params)
         data_json = r.json()
         temp_df = pd.DataFrame(data_json["result"]["data"])
-        big_df = pd.concat([big_df, temp_df], ignore_index=True)
+        big_df = pd.concat(objs=[big_df, temp_df], ignore_index=True)
     big_df.reset_index(inplace=True)
     big_df["index"] = big_df.index + 1
     big_df.columns = [
@@ -139,6 +141,7 @@ def stock_gdfx_holding_statistics_em(date: str = "20210930") -> pd.DataFrame:
     data_json = r.json()
     total_page = data_json["result"]["pages"]
     big_df = pd.DataFrame()
+    tqdm = get_tqdm()
     for page in tqdm(range(1, total_page + 1), leave=False):
         params.update({"pageNumber": page})
         r = requests.get(url, params=params)
@@ -241,12 +244,13 @@ def stock_gdfx_free_holding_change_em(date: str = "20210930") -> pd.DataFrame:
     data_json = r.json()
     total_page = data_json["result"]["pages"]
     big_df = pd.DataFrame()
+    tqdm = get_tqdm()
     for page in tqdm(range(1, total_page + 1), leave=False):
         params.update({"pageNumber": page})
         r = requests.get(url, params=params)
         data_json = r.json()
         temp_df = pd.DataFrame(data_json["result"]["data"])
-        big_df = pd.concat([big_df, temp_df], ignore_index=True)
+        big_df = pd.concat(objs=[big_df, temp_df], ignore_index=True)
 
     big_df.reset_index(inplace=True)
     big_df["index"] = big_df.index + 1
@@ -269,6 +273,7 @@ def stock_gdfx_free_holding_change_em(date: str = "20210930") -> pd.DataFrame:
         "流通市值统计",
         "持有个股",
         "-",
+        "-",
     ]
     big_df = big_df[
         [
@@ -284,12 +289,22 @@ def stock_gdfx_free_holding_change_em(date: str = "20210930") -> pd.DataFrame:
             "持有个股",
         ]
     ]
-    big_df["期末持股只数统计-总持有"] = pd.to_numeric(big_df["期末持股只数统计-总持有"])
-    big_df["期末持股只数统计-新进"] = pd.to_numeric(big_df["期末持股只数统计-新进"])
-    big_df["期末持股只数统计-增加"] = pd.to_numeric(big_df["期末持股只数统计-增加"])
-    big_df["期末持股只数统计-不变"] = pd.to_numeric(big_df["期末持股只数统计-不变"])
-    big_df["期末持股只数统计-减少"] = pd.to_numeric(big_df["期末持股只数统计-减少"])
-    big_df["流通市值统计"] = pd.to_numeric(big_df["流通市值统计"])
+    big_df["期末持股只数统计-总持有"] = pd.to_numeric(
+        big_df["期末持股只数统计-总持有"], errors="coerce"
+    )
+    big_df["期末持股只数统计-新进"] = pd.to_numeric(
+        big_df["期末持股只数统计-新进"], errors="coerce"
+    )
+    big_df["期末持股只数统计-增加"] = pd.to_numeric(
+        big_df["期末持股只数统计-增加"], errors="coerce"
+    )
+    big_df["期末持股只数统计-不变"] = pd.to_numeric(
+        big_df["期末持股只数统计-不变"], errors="coerce"
+    )
+    big_df["期末持股只数统计-减少"] = pd.to_numeric(
+        big_df["期末持股只数统计-减少"], errors="coerce"
+    )
+    big_df["流通市值统计"] = pd.to_numeric(big_df["流通市值统计"], errors="coerce")
     return big_df
 
 
@@ -318,12 +333,13 @@ def stock_gdfx_holding_change_em(date: str = "20210930") -> pd.DataFrame:
     data_json = r.json()
     total_page = data_json["result"]["pages"]
     big_df = pd.DataFrame()
+    tqdm = get_tqdm()
     for page in tqdm(range(1, total_page + 1), leave=False):
         params.update({"pageNumber": page})
         r = requests.get(url, params=params)
         data_json = r.json()
         temp_df = pd.DataFrame(data_json["result"]["data"])
-        big_df = pd.concat([big_df, temp_df], ignore_index=True)
+        big_df = pd.concat(objs=[big_df, temp_df], ignore_index=True)
 
     big_df.reset_index(inplace=True)
     big_df["index"] = big_df.index + 1
@@ -507,6 +523,7 @@ def stock_gdfx_free_holding_detail_em(date: str = "20210930") -> pd.DataFrame:
     data_json = r.json()
     total_page = data_json["result"]["pages"]
     big_df = pd.DataFrame()
+    tqdm = get_tqdm()
     for page in tqdm(range(1, total_page + 1), leave=False):
         params.update({"pageNumber": page})
         r = requests.get(url, params=params)
@@ -600,6 +617,7 @@ def stock_gdfx_holding_detail_em(
     data_json = r.json()
     total_page = data_json["result"]["pages"]
     big_df = pd.DataFrame()
+    tqdm = get_tqdm()
     for page in tqdm(range(1, total_page + 1), leave=False):
         params.update({"pageNumber": page})
         r = requests.get(url, params=params)
@@ -686,12 +704,13 @@ def stock_gdfx_free_holding_analyse_em(date: str = "20230930") -> pd.DataFrame:
     data_json = r.json()
     total_page = data_json["result"]["pages"]
     big_df = pd.DataFrame()
+    tqdm = get_tqdm()
     for page in tqdm(range(1, total_page + 1), leave=False):
         params.update({"pageNumber": page})
         r = requests.get(url, params=params)
         data_json = r.json()
         temp_df = pd.DataFrame(data_json["result"]["data"])
-        big_df = pd.concat([big_df, temp_df], ignore_index=True)
+        big_df = pd.concat(objs=[big_df, temp_df], ignore_index=True)
 
     big_df.reset_index(inplace=True)
     big_df["index"] = big_df.index + 1
@@ -783,12 +802,13 @@ def stock_gdfx_holding_analyse_em(date: str = "20230331") -> pd.DataFrame:
     data_json = r.json()
     total_page = data_json["result"]["pages"]
     big_df = pd.DataFrame()
+    tqdm = get_tqdm()
     for page in tqdm(range(1, total_page + 1), leave=False):
         params.update({"pageNumber": page})
         r = requests.get(url, params=params)
         data_json = r.json()
         temp_df = pd.DataFrame(data_json["result"]["data"])
-        big_df = pd.concat([big_df, temp_df], ignore_index=True)
+        big_df = pd.concat(objs=[big_df, temp_df], ignore_index=True)
 
     big_df.reset_index(inplace=True)
     big_df["index"] = big_df["index"] + 1
@@ -886,12 +906,13 @@ def stock_gdfx_free_holding_teamwork_em(symbol: str = "社保") -> pd.DataFrame:
     data_json = r.json()
     total_page = data_json["result"]["pages"]
     big_df = pd.DataFrame()
+    tqdm = get_tqdm()
     for page in tqdm(range(1, total_page + 1), leave=False):
         params.update({"pageNumber": page})
         r = requests.get(url, params=params)
         data_json = r.json()
         temp_df = pd.DataFrame(data_json["result"]["data"])
-        big_df = pd.concat([big_df, temp_df], ignore_index=True)
+        big_df = pd.concat(objs=[big_df, temp_df], ignore_index=True)
 
     big_df.reset_index(inplace=True)
     big_df["index"] = big_df.index + 1
@@ -948,12 +969,13 @@ def stock_gdfx_holding_teamwork_em(symbol: str = "社保") -> pd.DataFrame:
     data_json = r.json()
     total_page = data_json["result"]["pages"]
     big_df = pd.DataFrame()
+    tqdm = get_tqdm()
     for page in tqdm(range(1, total_page + 1), leave=False):
         params.update({"pageNumber": page})
         r = requests.get(url, params=params)
         data_json = r.json()
         temp_df = pd.DataFrame(data_json["result"]["data"])
-        big_df = pd.concat([big_df, temp_df], ignore_index=True)
+        big_df = pd.concat(objs=[big_df, temp_df], ignore_index=True)
 
     big_df.reset_index(inplace=True)
     big_df["index"] = big_df.index + 1

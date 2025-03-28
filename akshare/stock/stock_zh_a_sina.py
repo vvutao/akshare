@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
 """
-Date: 2023/12/5 19:20
+Date: 2025/3/20 19:00
 Desc: 新浪财经-A股-实时行情数据和历史行情数据(包含前复权和后复权因子)
 https://finance.sina.com.cn/realstock/company/sh689009/nc.shtml
 """
@@ -10,9 +10,8 @@ import json
 import re
 
 import pandas as pd
-import requests
 import py_mini_racer
-from tqdm import tqdm
+import requests
 
 from akshare.stock.cons import (
     zh_sina_a_stock_payload,
@@ -25,6 +24,7 @@ from akshare.stock.cons import (
     zh_sina_a_stock_amount_url,
 )
 from akshare.utils import demjson
+from akshare.utils.tqdm import get_tqdm
 
 
 def _get_zh_a_page_count() -> int:
@@ -52,13 +52,14 @@ def stock_zh_a_spot() -> pd.DataFrame:
     big_df = pd.DataFrame()
     page_count = _get_zh_a_page_count()
     zh_sina_stock_payload_copy = zh_sina_a_stock_payload.copy()
+    tqdm = get_tqdm()
     for page in tqdm(
         range(1, page_count + 1), leave=False, desc="Please wait for a moment"
     ):
         zh_sina_stock_payload_copy.update({"page": page})
         r = requests.get(zh_sina_a_stock_url, params=zh_sina_stock_payload_copy)
         data_json = demjson.decode(r.text)
-        big_df = pd.concat([big_df, pd.DataFrame(data_json)], ignore_index=True)
+        big_df = pd.concat(objs=[big_df, pd.DataFrame(data_json)], ignore_index=True)
 
     big_df = big_df.astype(
         {

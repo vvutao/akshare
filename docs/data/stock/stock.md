@@ -304,7 +304,7 @@ print(stock_sse_deal_daily_df)
 7  流通换手率       1.7068       1.4401    0.6029      3.8584   0.0
 ```
 
-#### 个股信息查询
+#### 个股信息查询-东财
 
 接口: stock_individual_info_em
 
@@ -349,6 +349,85 @@ print(stock_individual_info_em_df)
 5  股票简称                 平安银行
 6   总股本        19405918198.0
 7   流通股        19405754475.0
+```
+
+#### 个股信息查询-雪球
+
+接口: stock_individual_basic_info_xq
+
+目标地址: https://xueqiu.com/snowman/S/SH601127/detail#/GSJJ
+
+描述: 雪球财经-个股-公司概况-公司简介
+
+限量: 单次返回指定 symbol 的个股信息
+
+输入参数
+
+| 名称      | 类型    | 描述                      |
+|---------|-------|-------------------------|
+| symbol  | str   | symbol="SH601127"; 股票代码 |
+| token   | str   | token=None;             |
+| timeout | float | timeout=None; 默认不设置超时参数 |
+
+输出参数
+
+| 名称    | 类型     | 描述  |
+|-------|--------|-----|
+| item  | object | -   |
+| value | object | -   |
+
+接口示例
+
+```python
+import akshare as ak
+
+stock_individual_basic_info_xq_df = ak.stock_individual_basic_info_xq(symbol="SH601127")
+print(stock_individual_basic_info_xq_df)
+```
+
+数据示例
+
+```
+                            item                                              value
+0                         org_id                                         T000071215
+1                    org_name_cn                                        赛力斯集团股份有限公司
+2              org_short_name_cn                                                赛力斯
+3                    org_name_en                               Seres Group Co.,Ltd.
+4              org_short_name_en                                              SERES
+5        main_operation_business      新能源汽车及核心三电(电池、电驱、电控)、传统汽车及核心部件总成的研发、制造、销售及服务。
+6                operating_scope  　　一般项目：制造、销售：汽车零部件、机动车辆零部件、普通机械、电器机械、电器、电子产品（不...
+7                district_encode                                             500106
+8            org_cn_introduction  赛力斯始创于1986年，是以新能源汽车为核心业务的技术科技型汽车企业。现有员工1.6万人，A...
+9           legal_representative                                                张正萍
+10               general_manager                                                张正萍
+11                     secretary                                                 申薇
+12              established_date                                      1178812800000
+13                     reg_asset                                       1509782193.0
+14                     staff_num                                              16102
+15                     telephone                                     86-23-65179666
+16                      postcode                                             401335
+17                           fax                                     86-23-65179777
+18                         email                                    601127@seres.cn
+19                   org_website                                   www.seres.com.cn
+20                reg_address_cn                                      重庆市沙坪坝区五云湖路7号
+21                reg_address_en                                               None
+22             office_address_cn                                      重庆市沙坪坝区五云湖路7号
+23             office_address_en                                               None
+24               currency_encode                                             019001
+25                      currency                                                CNY
+26                   listed_date                                      1465920000000
+27               provincial_name                                                重庆市
+28             actual_controller                                       张兴海 (13.79%)
+29                   classi_name                                               民营企业
+30                   pre_name_cn                                     重庆小康工业集团股份有限公司
+31                      chairman                                                张正萍
+32               executives_nums                                                 20
+33              actual_issue_vol                                        142500000.0
+34                   issue_price                                               5.81
+35             actual_rc_net_amt                                        738451000.0
+36              pe_after_issuing                                              18.19
+37  online_success_rate_of_issue                                           0.110176
+38            affiliate_industry         {'ind_code': 'BK0025', 'ind_name': '汽车整车'}
 ```
 
 #### 行情报价
@@ -1004,8 +1083,8 @@ print(stock_zh_a_spot_df)
 | 名称      | 类型    | 描述                                                             |
 |---------|-------|----------------------------------------------------------------|
 | symbol  | str   | symbol="SH600000"; 证券代码，可以是 A 股个股代码，A 股场内基金代码，A 股指数，美股代码, 美股指数 |
-| timeout | float | timeout=None; 默认不设置超时参数                                        |
 | token   | float | token=None; 默认不设置token                                         |
+| timeout | float | timeout=None; 默认不设置超时参数                                        |
 
 输出参数
 
@@ -1753,7 +1832,7 @@ print(stock_zh_a_hist_min_em_df)
 
 目标地址: https://quote.eastmoney.com/f1.html?newcode=0.000001
 
-描述: 东财财富-分时数据
+描述: 东方财富-分时数据
 
 限量: 单次返回指定股票最近一个交易日的分时数据, 包含盘前数据
 
@@ -3471,6 +3550,80 @@ print(stock_us_hist_df)
 [673 rows x 11 columns]
 ```
 
+#### 个股信息查询-雪球
+
+接口: stock_individual_basic_info_us_xq
+
+目标地址: https://xueqiu.com/snowman/S/NVDA/detail#/GSJJ
+
+描述: 雪球-个股-公司概况-公司简介
+
+限量: 单次返回指定 symbol 的个股信息
+
+输入参数
+
+| 名称      | 类型    | 描述                      |
+|---------|-------|-------------------------|
+| symbol  | str   | symbol="NVDA"; 股票代码     |
+| token   | str   | token=None;             |
+| timeout | float | timeout=None; 默认不设置超时参数 |
+
+输出参数
+
+| 名称    | 类型     | 描述  |
+|-------|--------|-----|
+| item  | object | -   |
+| value | object | -   |
+
+接口示例
+
+```python
+import akshare as ak
+
+stock_individual_basic_info_us_xq_df = ak.stock_individual_basic_info_us_xq(symbol="SH601127")
+print(stock_individual_basic_info_us_xq_df)
+```
+
+数据示例
+
+```
+                             item                                              value
+0                          org_id                                         T000040433
+1                     org_name_cn                                              英伟达公司
+2               org_short_name_cn                                                英伟达
+3                     org_name_en                                 Nvidia Corporation
+4               org_short_name_en                                             Nvidia
+5         main_operation_business                                           图形和通信处理器
+6                 operating_scope  公司的图形和通信处理器已被多种多样的计算平台采用，包括个人数字媒体PC、商用PC、专业工作站...
+7                 district_encode                                             001008
+8             org_cn_introduction  英伟达公司于1993年4月在加利福尼亚州注册成立，并于1998年4月在特拉华州重新注册成立。...
+9            legal_representative                                               None
+10                general_manager                                               None
+11                      secretary                                               None
+12               established_date                                               None
+13                      reg_asset                                               None
+14                      staff_num                                              36000
+15                      telephone                                      1-408-4862000
+16                       postcode                                              95051
+17                            fax                                               None
+18                          email                                               None
+19                    org_website                                     www.nvidia.com
+20                 reg_address_cn                                               特拉华州
+21                 reg_address_en                                               特拉华州
+22              office_address_cn                                               None
+23              office_address_en  2788 San Tomas Expressway\r\nSanta Clara\r\nCa...
+24                currency_encode                                               None
+25                       currency
+26                    listed_date                                       916981200000
+27                         td_mkt                                      美国NASDAQ证券交易所
+28                       chairman                                               None
+29                executives_nums                                                  6
+30  actual_issue_total_shares_num                                               None
+31             actual_issue_price                                               None
+32            total_raise_capital                                               None
+33                     mainholder                                       领航集团 (8.30%)
+```
+
 #### 分时数据-东财
 
 接口: stock_us_hist_min_em
@@ -3997,6 +4150,66 @@ print(stock_hk_spot_df)
 2433   0.153   0.160       0.000     0.0000000
 2434   0.141   0.144      -0.003    -2.0833333
 2435   0.166   0.169       0.000     0.0000000
+```
+
+#### 个股信息查询-雪球
+
+接口: stock_individual_basic_info_hk_xq
+
+目标地址: https://xueqiu.com/S/00700
+
+描述: 雪球-个股-公司概况-公司简介
+
+限量: 单次返回指定 symbol 的个股信息
+
+输入参数
+
+| 名称      | 类型    | 描述                      |
+|---------|-------|-------------------------|
+| symbol  | str   | symbol="02097"; 股票代码    |
+| token   | str   | token=None;             |
+| timeout | float | timeout=None; 默认不设置超时参数 |
+
+输出参数
+
+| 名称    | 类型     | 描述  |
+|-------|--------|-----|
+| item  | object | -   |
+| value | object | -   |
+
+接口示例
+
+```python
+import akshare as ak
+
+stock_individual_basic_info_hk_xq_df = ak.stock_individual_basic_info_hk_xq(symbol="02097")
+print(stock_individual_basic_info_hk_xq_df)
+```
+
+数据示例
+
+```
+           item                                              value
+0       comunic                                        231269720.0
+1     comcnname                                         蜜雪冰城股份有限公司
+2     comenname                                        MIXUE Group
+3       incdate                                    1209484800000.0
+4        rgiofc                 中国河南省郑州市金水区北三环南、文化路东瀚海北金商业中心16004室
+5    hofclctmbu                 中国河南省郑州市金水区北三环南、文化路东瀚海北金商业中心16004室
+6      chairman                                                张红超
+7           mbu                                             现制饮品企业
+8       comintr  我们是一家领先的现制饮品企业,聚焦为广大消费者提供单价约6元人民币(约1美元)的高质平价的现...
+9     refccomty                                                1.0
+10     numtissh                                         17059900.0
+11         ispr                                              202.5
+12         nrfd                                       3291000000.0
+13  nation_name                                                 中国
+14          tel                                      0371-89834090
+15          fax                                      0371-89916887
+16        email                                dongshihui@mxbc.com
+17     web_site                                http://www.mxbc.com
+18    lsdateipo                                    1740931200000.0
+19   mainholder                                                张红超
 ```
 
 #### 分时数据-东财
@@ -6854,7 +7067,7 @@ print(stock_hsgt_institution_statistics_em_df)
 
 目标地址: https://quote.eastmoney.com/center/gridlist.html#hk_sh_stocks
 
-描述: 东方财富网-行情中心-沪深港通-港股通(沪>港)-股票
+描述: 东方财富网-行情中心-沪深港通-港股通(沪>港)-股票；按股票代码排序
 
 限量: 单次获取所有数据
 
@@ -6893,18 +7106,18 @@ print(stock_hsgt_sh_hk_spot_em_df)
 数据示例
 
 ```
-     序号  代码     名称      最新价  ...     最低    昨收      成交量       成交额
-0      1  02362    金川国际    0.610  ...   0.540   0.54  4.526210   2.776989
-1      2  09880     优必选  102.500  ...  90.350  92.80  0.206596  20.297358
-2      3  09923      移卡    9.000  ...   8.060   8.16  0.041800   0.359468
-3      4  06808    高鑫零售    1.920  ...   1.760   1.77  0.412058   0.791681
-4      5  09690    途虎-W   17.000  ...  15.600  15.82  0.057026   0.971359
-..   ...    ...     ...      ...  ...     ...    ...       ...        ...
-540  541  02150    奈雪的茶    1.560  ...   1.520   1.71  1.446353   2.303378
-541  542  01114    华晨中国    3.840  ...   3.820   4.24  2.275984   8.954803
-542  543  03868    信义能源    0.910  ...   0.910   1.01  1.009171   0.945938
-543  544  00095  绿景中国地产    0.495  ...   0.485   0.55  1.317940   0.683912
-544  545  02465    龙蟠科技    6.160  ...   6.160   7.13  0.205345   1.331749
+     序号  代码      名称     最新价  ...    最低    昨收     成交量       成交额
+0      1  00001      长和   49.50  ...   49.40   51.55  0.453758  22.712456
+1      2  00002    中电控股   64.25  ...   64.15   64.99  0.054139   3.488916
+2      3  00003  香港中华煤气    6.25  ...    6.17    6.27  0.343850   2.151922
+3      4  00004   九龙仓集团   19.38  ...   19.24   19.70  0.016805   0.327002
+4      5  00005    汇丰控股   87.95  ...   87.95   90.00  0.374613  33.070786
+..   ...    ...     ...     ...  ...     ...     ...       ...        ...
+540  541  09989     海普瑞    4.48  ...    4.43    4.50  0.023235   0.103881
+541  542  09992    泡泡玛特  116.40  ...  114.10  116.20  0.061158   7.172251
+542  543  09993    金辉控股    2.70  ...    2.69    2.80  0.007670   0.020909
+543  544  09995    荣昌生物   17.80  ...   17.42   17.90  0.031735   0.566258
+544  545  09997    康基医疗    7.53  ...    7.32    7.40  0.040656   0.303262
 [545 rows x 12 columns]
 ```
 
@@ -7733,24 +7946,24 @@ print(stock_xgsglb_em_df)
 
 输出参数
 
-| 名称          | 类型      | 描述      |
-|-------------|---------|---------|
-| 序号          | int64   | -       |
-| 股票代码        | object  | -       |
-| 股票简称        | object  | -       |
-| 每股收益        | float64 | 注意单位: 元 |
-| 营业收入-营业收入   | float64 | 注意单位: 元 |
-| 营业收入-同比增长   | float64 | 注意单位: % |
-| 营业收入-季度环比增长 | float64 | 注意单位: % |
-| 净利润-净利润     | float64 | 注意单位: 元 |
-| 净利润-同比增长    | float64 | 注意单位: % |
-| 净利润-季度环比增长  | float64 | 注意单位: % |
-| 每股净资产       | float64 | 注意单位: 元 |
-| 净资产收益率      | float64 | 注意单位: % |
-| 每股经营现金流量    | float64 | 注意单位: 元 |
-| 销售毛利率       | float64 | 注意单位: % |
-| 所处行业        | object  | -       |
-| 最新公告日期      | object  | -       |
+| 名称           | 类型      | 描述      |
+|--------------|---------|---------|
+| 序号           | int64   | -       |
+| 股票代码         | object  | -       |
+| 股票简称         | object  | -       |
+| 每股收益         | float64 | 注意单位: 元 |
+| 营业总收入-营业总收入  | float64 | 注意单位: 元 |
+| 营业总收入-同比增长   | float64 | 注意单位: % |
+| 营业总收入-季度环比增长 | float64 | 注意单位: % |
+| 净利润-净利润      | float64 | 注意单位: 元 |
+| 净利润-同比增长     | float64 | 注意单位: % |
+| 净利润-季度环比增长   | float64 | 注意单位: % |
+| 每股净资产        | float64 | 注意单位: 元 |
+| 净资产收益率       | float64 | 注意单位: % |
+| 每股经营现金流量     | float64 | 注意单位: 元 |
+| 销售毛利率        | float64 | 注意单位: % |
+| 所处行业         | object  | -       |
+| 最新公告日期       | object  | -       |
 
 接口示例
 
@@ -7764,18 +7977,19 @@ print(stock_yjbb_em_df)
 数据示例
 
 ```
-    序号    股票代码  股票简称    每股收益  ... 每股经营现金流量  销售毛利率  所处行业    最新公告日期
-0        1  873001  纬达光电  0.1400  ...  0.126094  43.276814   None  2022-11-10
-1        2  002970  锐明技术 -0.3400  ...  0.030892  30.685575  计算机设备  2022-11-10
-2        3  400067   欣泰3 -0.0400  ... -0.006301  32.457913   None  2022-11-02
-3        4  688701  卓锦股份 -0.0200  ...  0.113099  21.935457   环保行业  2022-10-31
-4        5  688565  力源科技  0.0600  ...  0.037649  11.651499   环保行业  2022-10-29
-    ...     ...   ...     ...  ...       ...        ...    ...         ...
-5343  5344  000838  财信发展  0.0163  ... -0.158798  20.020858  房地产开发  2022-04-12
-5344  5345  870529  东铭新材  0.0200  ... -0.003474  29.472422   None  2022-04-11
-5345  5346  600313  农发种业  0.0176  ...  0.102528   9.302207   农牧饲渔  2022-04-08
-5346  5347  600731  湖南海利  0.1455  ... -0.024639  23.754061   农药兽药  2022-04-07
-5347  5348  300692  中环环保  0.1100  ...  0.124310  41.607754   环保行业  2022-04-02
+    序号   股票代码  股票简称  每股收益  ... 每股经营现金流量 销售毛利率 所处行业   最新公告日期
+0        1  002512  达华智能 -0.0349  ... -0.028029  10.287193  计算机设备  2025-01-27
+1        2  000833  粤桂股份  0.0533  ... -0.027977  22.838955   综合行业  2025-01-25
+2        3  600576  祥源文旅 -0.0050  ... -0.075190  22.145564   旅游酒店  2025-01-03
+3        4  688687  凯因科技  0.1500  ...  0.328110  84.879441   生物制品  2024-12-20
+4        5  873989  中达新材  0.0700  ... -0.019306  12.369830   None  2024-12-11
+...    ...     ...   ...     ...  ...       ...        ...    ...         ...
+5850  5851  400055   国瓷5 -0.0080  ... -0.020637  -5.145723   None  2022-04-25
+5851  5852  873599  振通检测  0.0700  ... -0.203169  34.648249   None  2022-04-22
+5852  5853  420063  武锅B3 -0.1100  ... -0.068036  -0.167132   None  2022-04-22
+5853  5854  430717  源通机械  0.0300  ...  0.152183  25.958049   None  2022-04-15
+5854  5855  870529  东铭新材  0.0200  ... -0.003474  29.472422   None  2022-04-11
+[5855 rows x 16 columns]
 ```
 
 #### 业绩快报
@@ -11545,7 +11759,7 @@ print(stock_financial_abstract_df)
 
 描述: 同花顺-财务指标-主要指标
 
-限量: 单次获取主要指标所有历史数据
+限量: 单次获取指定 symbol 的所有数据
 
 输入参数
 
@@ -19984,26 +20198,26 @@ print(stock_profit_forecast_ths_df)
 ```python
 import akshare as ak
 
-stock_board_industry_index_ths_df = ak.stock_board_industry_index_ths(symbol="阿里巴巴概念", start_date="20200101", end_date="20250228")
-print(stock_board_industry_index_ths_df)
+stock_board_concept_index_ths_df = ak.stock_board_concept_index_ths(symbol="阿里巴巴概念", start_date="20200101", end_date="20250321")
+print(stock_board_concept_index_ths_df)
 ```
 
 数据示例
 
 ```
-       日期       开盘价       最高价  ...    收盘价        成交量           成交额
+        日期       开盘价     最高价  ...     收盘价      成交量           成交额
 0     2020-01-02  1105.430  1133.391  ...  1130.280   1867106700  2.270406e+10
 1     2020-01-03  1133.673  1143.881  ...  1140.087   1734555400  2.049213e+10
 2     2020-01-06  1132.865  1160.416  ...  1152.178   1926283700  2.349216e+10
 3     2020-01-07  1154.766  1173.157  ...  1173.068   1750895500  2.130472e+10
 4     2020-01-08  1163.282  1165.660  ...  1145.718   1803020900  2.088292e+10
 ...          ...       ...       ...  ...       ...          ...           ...
-1243  2025-02-24  1863.806  1878.155  ...  1861.602  15264005000  2.925278e+11
-1244  2025-02-25  1810.802  1867.696  ...  1841.722  13808811000  2.679426e+11
-1245  2025-02-26  1850.068  1863.424  ...  1858.920  12255662600  2.370736e+11
-1246  2025-02-27  1856.049  1869.277  ...  1844.177  13536135000  2.491938e+11
-1247  2025-02-28  1825.706  1827.989  ...  1801.832   6594539400  1.185183e+11
-[1248 rows x 7 columns]
+1258  2025-03-17  1876.853  1885.138  ...  1873.981  10514337100  1.814942e+11
+1259  2025-03-18  1878.808  1895.155  ...  1880.904  10643759300  1.781277e+11
+1260  2025-03-19  1869.726  1870.423  ...  1853.801  10066894000  1.679532e+11
+1261  2025-03-20  1846.304  1869.670  ...  1839.816   9905099800  1.734386e+11
+1262  2025-03-21  1826.952  1830.013  ...  1790.115  10158278900  1.719123e+11
+[1263 rows x 7 columns]
 ```
 
 #### 同花顺-概念板块简介

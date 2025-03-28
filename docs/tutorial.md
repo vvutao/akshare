@@ -818,7 +818,8 @@
  "stock_a_ttm_lyr"  # 全部 A 股-等权重市盈率、中位数市盈率
  "stock_a_all_pb"  # 全部 A 股-等权重市净率、中位数市净率
  # REITs
- "reits_realtime_em"  #  REITs-行情
+ "reits_realtime_em"  #  REITs-实时行情
+ "reits_hist_em"  #  REITs-历史行情
  # A 股分时数据
  "stock_zh_a_hist_min_em"  # 东财-股票分时
  "stock_zh_a_hist_pre_min_em"  # 东财-股票盘前分时
@@ -932,9 +933,11 @@
  "spot_quotations_sge"  # 上海黄金交易所-实时行情走势
  "spot_golden_benchmark_sge"  # 上海金基准价
  "spot_silver_benchmark_sge"  # 上海银基准价
-
  # 个股信息查询
- "stock_individual_info_em"  # 个股信息查询
+ "stock_individual_info_em"  # 个股信息查询-东财
+ "stock_individual_basic_info_xq"  # 个股信息查询-雪球
+ "stock_individual_basic_info_us_xq"  # 个股信息查询-雪球-美股
+ "stock_individual_basic_info_hk_xq"  # 个股信息查询-雪球-港股
  # 中国食糖指数
  "index_sugar_msweet"  # 中国食糖指数
  # 配额内进口糖估算指数

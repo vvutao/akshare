@@ -3041,9 +3041,41 @@ amac_manager_cancelled_info # 中国证券投资基金业协会-信息公示-诚
 1.16.30 add: add forex_hist_em interface
 1.16.31 add: add index_global_hist_em interface
 1.16.32 fix: fix news_economic_baidu interface
+1.16.33 fix: fix fund_open_fund_daily_em interface
+1.16.34 fix: fix stock_individual_fund_flow_rank interface
+1.16.35 fix: fix futures_global_spot_em interface
+1.16.36 fix: fix stock_intraday_em interface
+1.16.37 fix: fix stock_board_concept_hist_em interface
+1.16.38 fix: fix fund_etf_hist_em interface
+1.16.39 fix: fix option_current_em interface
+1.16.40 add: add stock_individual_basic_info_xq interface
+1.16.41 fix: fix stock_individual_fund_flow_rank interface
+1.16.42 fix: fix stock_concept_fund_flow_hist interface
+1.16.43 fix: fix option_value_analysis_em interface
+1.16.44 fix: fix stock_board_concept_hist_em interface
+1.16.45 fix: fix option_risk_analysis_em interface
+1.16.46 fix: fix stock_hk_index_spot_em interface
+1.16.47 fix: fix stock_hsgt_stock_statistics_em interface
+1.16.48 fix: fix stock_individual_basic_info_xq interface
+1.16.49 fix: fix index_zh_a_hist_min_em interface
+1.16.50 fix: fix futures_inventory_99 interface
+1.16.51 fix: fix stock_individual_basic_info_xq interface
+1.16.52 fix: fix stock_zh_a_spot_em interface
+1.16.53 fix: fix stock_yjbb_em interface
+1.16.54 fix: fix stock_zh_a_spot_em interface
+1.16.55 fix: fix stock_zh_a_spot_em interface
+1.16.56 fix: fix stock_zh_a_daily interface
+1.16.57 fix: fix stock_market_pe_lg interface
+1.16.58 fix: fix stock_zh_a_spot interface
+1.16.59 fix: fix option_czce_hist interface
+1.16.60 fix: fix stock_individual_fund_flow_rank interface
+1.16.61 fix: fix stock_board_concept_index_ths interface
+1.16.62 fix: fix stock_gdfx_free_holding_change_em interface
+1.16.63 fix: fix stock_board_concept_name_ths interface
+1.16.64 add: add reits_hist_em interface
 """
 
-__version__ = "1.16.32"
+__version__ = "1.16.64"
 __author__ = "AKFamily"
 
 import sys
@@ -3064,6 +3096,22 @@ if sys.version_info < (3, 9):
     )
 
 del sys
+
+"""
+异步接口
+"""
+from akshare.stock_a.stock_zh_a_spot import stock_zh_a_spot_em
+from akshare.stock_a.stock_individual_fund_flow_rank import stock_individual_fund_flow_rank
+from akshare.stock_a.stock_board_concept_name_em import stock_board_concept_name_em
+
+"""
+雪球-个股-公司概况-公司简介
+"""
+from akshare.stock_fundamental.stock_basic_info_xq import (
+    stock_individual_basic_info_xq,
+    stock_individual_basic_info_hk_xq,
+    stock_individual_basic_info_us_xq,
+)
 
 """
 新浪财经-行情中心-环球市场
@@ -3986,7 +4034,7 @@ from akshare.stock.stock_us_pink import stock_us_pink_spot_em
 """
 REITs
 """
-from akshare.reits.reits_basic import reits_realtime_em
+from akshare.reits.reits_basic import reits_realtime_em, reits_hist_em
 
 """
 全部 A 股-等权重市盈率、中位数市盈率
@@ -4098,7 +4146,7 @@ from akshare.stock.stock_board_concept_em import (
     stock_board_concept_cons_em,
     stock_board_concept_hist_em,
     stock_board_concept_hist_min_em,
-    stock_board_concept_name_em,
+    # stock_board_concept_name_em,
     stock_board_concept_spot_em,
 )
 
@@ -4142,7 +4190,7 @@ from akshare.stock_feature.stock_pankou_em import (
 A 股东方财富
 """
 from akshare.stock_feature.stock_hist_em import (
-    stock_zh_a_spot_em,
+    # stock_zh_a_spot_em,
     stock_bj_a_spot_em,
     stock_new_a_spot_em,
     stock_kc_a_spot_em,
@@ -4741,7 +4789,7 @@ from akshare.stock.stock_fund_em import (
     stock_individual_fund_flow,
     stock_market_fund_flow,
     stock_sector_fund_flow_rank,
-    stock_individual_fund_flow_rank,
+    # stock_individual_fund_flow_rank,
     stock_sector_fund_flow_summary,
     stock_sector_fund_flow_hist,
     stock_concept_fund_flow_hist,
